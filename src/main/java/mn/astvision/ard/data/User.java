@@ -29,5 +29,10 @@ public class User {
     @JsonIgnore
     private String password;
 
+    private boolean active;
+
+    @JsonIgnore
+    private boolean deleted;
+
     private List<String> roles;
 }
