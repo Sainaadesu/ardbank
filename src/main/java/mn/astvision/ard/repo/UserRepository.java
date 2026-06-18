@@ -1,11 +1,11 @@
 package mn.astvision.ard.repo;
 
-import mn.astvision.ard.data.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.Optional;
 
-public interface UserRepository extends MongoRepository<User, String> {
+import org.springframework.data.mongodb.repository.MongoRepository;
 
+import mn.astvision.ard.data.User;
+
+public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByUsername(String username);
 }

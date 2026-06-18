@@ -19,13 +19,10 @@ import mn.astvision.ard.enums.TransactionType;
 @Data
 @Document(collection = "transactions")
 
-// 1. Get the current SQL timestamp
-
 public class Transaction {    
    @Id
     private String TransactionId;
 
-    @Indexed(unique=true)
     private BigDecimal Amount;
     private TransactionType TransactionType;
     private LocalDateTime dateTime;

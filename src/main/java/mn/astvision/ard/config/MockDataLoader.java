@@ -30,18 +30,22 @@ public class MockDataLoader implements CommandLineRunner {
         }
 
         List<User> users = List.of(
-                mockUser("admin", "System", "Admin", List.of("ADMIN", "USER")),
-                mockUser("bbold", "Bold", "Batbayar", List.of("USER")),
-                mockUser("tsetseg", "Tsetseg", "Munkh", List.of("USER")),
+                mockUser("admin", "System", "Admin",List.of("ADMIN", "USER")),
+                mockUser("bbold", "Bold", "Batbayar",List.of("USER")),
+                mockUser("tsetseg", "Tsetseg", "Munkh",List.of("USER")),
                 mockUser("dorj", "Dorj", "Ganbat", List.of("USER")),
                 mockUser("oyuna", "Oyun", "Erdene", List.of("USER"))
         );
+
+
+
+
 
         userRepository.saveAll(users);
         log.info("Seeded {} mock users (default password: 'password')", users.size());
     }
 
-    private User mockUser(String username, String firstName, String lastName, List<String> roles) {
+    private User mockUser(String username, String firstName, String lastName,List<String> roles) {
         return User.builder()
                 .username(username)
                 .firstName(firstName)

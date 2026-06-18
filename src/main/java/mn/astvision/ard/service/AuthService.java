@@ -13,7 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.util.List;
+import java.util.Random;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -35,6 +37,7 @@ public class AuthService {
         userRepository.findByUsername(request.username()).ifPresent(existing -> {
             throw new ResponseStatusException(CONFLICT, "Username already taken: " + request.username());
         });
+
 
         User user = User.builder()
                 .username(request.username())

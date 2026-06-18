@@ -13,7 +13,7 @@ public record UserResponse(
 ) {
     public static UserResponse from(User user) {
         return new UserResponse(
-                user.getId(),
+                user.getUserId(),
                 user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
