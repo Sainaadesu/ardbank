@@ -63,7 +63,7 @@ public class AccountService {
                 accTypeNum = "4";
             }
         }
-        Sequence AccountSerial = sequenceRepository.findById("account_seq").orElseThrow(IllegalStateException::new);
+        Sequence AccountSerial = sequenceRepository.findById("account_seq").orElseGet(()->buildSequence());
         Integer sequenceNum = AccountSerial.getSequenceNum();
 
         AccountSerial.setSequenceNum(sequenceNum++);
@@ -72,6 +72,16 @@ public class AccountService {
         String accNum = bankId+accTypeNum+sequenceNum;
         return accNum ;
     }
+    //өгөгдлийн сангаас document олдохгүй бол шинээр үүсгэх
+    private Sequence buildSequence() {
+        Sequence sequence = Sequence.builder()
+                .sequenceId("account_seq")
+                .sequenceNum(100000)
+                .build();
+        sequenceRepository.save(sequence);
+        return sequenceRepository.findById("account_seq").orElseThrow(IllegalStateException::new);
+    }
+
     //Update
     public Account update(Account account) {
         if(account.getUserId() ==null ){
