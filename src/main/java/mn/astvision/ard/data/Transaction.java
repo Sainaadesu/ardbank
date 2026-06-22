@@ -23,9 +23,10 @@ public class Transaction {
    @Id
     private String TransactionId;
 
-    private BigDecimal Amount;
-    private TransactionType TransactionType;
-    private LocalDateTime createdAt;
-    private String accountId;
-
+    private BigDecimal Amount;//мөнгөн дүн
+    private TransactionType TransactionType;//төрөл дотоод гадаад гм
+    private LocalDateTime createdAt;//хэзээ үүссэн
+    private String fromAccount;// аль данснаас шилжүүлэх
+    private String toAccount;// аль дансруу шилжүүлэх дансмэдээлэл
+    private String description;// шилжүүлгийн тайлбар
 }
