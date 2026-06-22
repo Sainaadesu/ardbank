@@ -60,12 +60,13 @@ public class AuthService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.username(), request.password()));
-        } catch (BadCredentialsException ex) {
+        }
+        catch (BadCredentialsException ex) {
             throw new ResponseStatusException(UNAUTHORIZED, "Invalid username or password");
-        } catch (AuthenticationException ex) {
+        }
+        catch (AuthenticationException ex) {
             throw new ResponseStatusException(UNAUTHORIZED, ex.getMessage());
         }
-
         return userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new ResponseStatusException(UNAUTHORIZED, "Invalid username or password"));
     }

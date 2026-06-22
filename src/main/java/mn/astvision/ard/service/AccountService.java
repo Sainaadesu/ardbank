@@ -1,5 +1,6 @@
 package mn.astvision.ard.service;
 
+import lombok.extern.slf4j.Slf4j;
 import mn.astvision.ard.data.Sequence;
 import mn.astvision.ard.data.User;
 import mn.astvision.ard.enums.AccountCategory;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.Random;
 
 
+@Slf4j
 @Service
 public class AccountService {
 
@@ -66,7 +68,7 @@ public class AccountService {
         Sequence AccountSerial = sequenceRepository.findById("account_seq").orElseGet(()->buildSequence());
         Integer sequenceNum = AccountSerial.getSequenceNum();
 
-        AccountSerial.setSequenceNum(sequenceNum++);
+        AccountSerial.setSequenceNum(sequenceNum+1);
         sequenceRepository.save(AccountSerial);
 
         String accNum = bankId+accTypeNum+sequenceNum;
@@ -114,12 +116,12 @@ public class AccountService {
     }
 
     public Account getById(String userId) {
-        boolean isExists = accountRepository.existsById(userId);
+        boolean isExists = accountRepository.existsByUserId(userId);
 
         if(!isExists)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"account doesn't exist");
 
-        Optional<Account> byId = accountRepository.findById(userId);
+        Optional<Account> byId = accountRepository.findByUserId(userId);
         return byId.orElseThrow(IllegalStateException::new);
     }
 
