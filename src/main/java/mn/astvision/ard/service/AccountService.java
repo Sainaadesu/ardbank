@@ -1,7 +1,9 @@
 package mn.astvision.ard.service;
 
+import mn.astvision.ard.data.Sequence;
 import mn.astvision.ard.data.User;
 import mn.astvision.ard.enums.AccountCategory;
+import mn.astvision.ard.repo.SequenceRepository;
 import mn.astvision.ard.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import mn.astvision.ard.data.Account;
 import mn.astvision.ard.repo.AccountRepository;
+
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -25,6 +28,8 @@ public class AccountService {
     private AccountRepository accountRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SequenceRepository sequenceRepository;
 
     //CRUD
     //Create
@@ -40,32 +45,31 @@ public class AccountService {
         account.setAccountNumber(generated);
         return accountRepository.save(account);
     }
-    //accoundnum gener
-    private String generateAccountNumber(AccountCategory type) {
+    //accoundnum generate
+    public String generateAccountNumber(AccountCategory type) {
         String bankId = "36";
         String accTypeNum = "";
         switch (type){
-            case AccountCategory.Saving -> {
+                case AccountCategory.Saving -> {
                 accTypeNum="1";
             }
-            case  AccountCategory.Checking ->{
+                case  AccountCategory.Checking ->{
                 accTypeNum="2";
             }
-            case AccountCategory.Term_Deposit -> {
+                case AccountCategory.Term_Deposit -> {
                 accTypeNum = "3";
             }
-            case AccountCategory.Demand_Deposit -> {
+                case AccountCategory.Demand_Deposit -> {
                 accTypeNum = "4";
             }
         }
-        boolean accSerExists = true;
-        String accNum = "";
+        Sequence AccountSerial = sequenceRepository.findById("account_seq").orElseThrow(IllegalStateException::new);
+        Integer sequenceNum = AccountSerial.getSequenceNum();
 
-        while(accSerExists){
-            int AccountSerial = new Random().nextInt(9000000) + 1000000;
-            accNum = bankId+accTypeNum+AccountSerial;
-            accSerExists = accountRepository.existsByAccountNumber(accNum);
-        }
+        AccountSerial.setSequenceNum(sequenceNum++);
+        sequenceRepository.save(AccountSerial);
+
+        String accNum = bankId+accTypeNum+sequenceNum;
         return accNum ;
     }
     //Update
@@ -78,7 +82,9 @@ public class AccountService {
         if(!isExists){
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"Account doesn't exists");
         }
+
         return accountRepository.save(account);
+
     }
     //Delete
     public void delete(String id) {

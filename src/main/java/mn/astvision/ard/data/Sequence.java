@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 
 public class Sequence {
     @Id
-    private String Sequence_data;
-    private Long data;
+    private String sequenceId;
+    private Integer sequenceNum;
 }

@@ -29,6 +29,8 @@ public class User {
     @Indexed(unique = true)
     private String username;
 
+    private boolean active;
+
     @JsonIgnore
     private String password;
 

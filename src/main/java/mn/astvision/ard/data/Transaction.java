@@ -25,7 +25,7 @@ public class Transaction {
 
     private BigDecimal Amount;
     private TransactionType TransactionType;
-    private LocalDateTime dateTime;
+    private LocalDateTime createdAt;
     private String accountId;
 
 }

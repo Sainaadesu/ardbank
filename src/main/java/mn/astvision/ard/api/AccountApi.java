@@ -32,9 +32,10 @@ public class AccountApi {
     public Account getById(@RequestBody Account account) {
         return accountService.getById(account.getUserId());
     }
-    ////account read By Account Number
+
+    /// /account read By Account Number
     @GetMapping("/by-acc")
-    public Account getByAccNu(@RequestBody Account account){
+    public Account getByAccNu(@RequestBody Account account) {
         return accountService.getByAccNum(account.getAccountNumber());
     }
 
@@ -42,6 +43,7 @@ public class AccountApi {
     public Account update(@RequestBody Account account) {
         return accountService.update(account);
     }
+
     //account delete By Account Number
     @DeleteMapping
     public void delete(@RequestBody Account account) {
