@@ -43,6 +43,7 @@ public class AuthService {
                 .username(request.username())
                 .firstName(request.firstName())
                 .lastName(request.lastName())
+                .active(request.active())
                 .password(passwordEncoder.encode(request.password()))
                 .roles(List.of("USER"))
                 .build();
