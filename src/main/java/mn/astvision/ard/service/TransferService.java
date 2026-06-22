@@ -78,6 +78,7 @@ public class TransferService {
         }
 
         // Apply both legs.
+
         from.setCurrentBalance(balanceOf(from).subtract(amount));
         to.setCurrentBalance(balanceOf(to).add(amount));
         accountRepository.save(from);

@@ -13,6 +13,8 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
 
     boolean existsByReference(String reference);
 
+
+
     /** Outgoing transfers of an account, newest first. */
     List<Transaction> findByFromAccountIdOrderByCreatedAtDesc(String fromAccountId);
 
