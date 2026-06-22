@@ -11,14 +11,9 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
 
     Optional<Transaction> findByReference(String reference);
 
-    boolean existsByReference(String reference);
-
-
-
     /** Outgoing transfers of an account, newest first. */
     List<Transaction> findByFromAccountIdOrderByCreatedAtDesc(String fromAccountId);
 
     /** Incoming transfers of an account, newest first. */
     List<Transaction> findByToAccountIdOrderByCreatedAtDesc(String toAccountId);
-    List<Transaction> findByToAccountNumberAndFromAccountNumber(String accountNumber, String accountNumber1);
 }

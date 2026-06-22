@@ -17,8 +17,6 @@ import java.util.List;
 @Service
 public class TransactionService {
     @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private TransferService transferService;
@@ -37,18 +35,13 @@ public class TransactionService {
         }
         return transferService.transfer(transaction);
     }
-    //Бүх хуулга харах
-    public List<Transaction> transactionList(String accountId) {
-        return transferService.history(accountId);
-    }
-
     //Сүүлд хийсэн хуулга харах
-    public Transaction transactionLast(String accountNumber) {
+    public Transaction transactionLast(String accountId) {
         return null;
     }
-
+    //орлого зарлагын нийлбэрийг олох
     public BigDecimal inOut(String accountNumber) {
-        List<Transaction> transactions = transactionRepository.findByToAccountNumberAndFromAccountNumber(accountNumber,accountNumber);
+        List<Transaction> transactions = transferService.history(accountNumber);
         return balanceService.calculate(accountNumber, transactions );
     }
 }

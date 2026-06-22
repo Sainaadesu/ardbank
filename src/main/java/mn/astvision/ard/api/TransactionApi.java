@@ -4,6 +4,7 @@ import mn.astvision.ard.api.dto.TransferRequest;
 import mn.astvision.ard.data.Transaction;
 import mn.astvision.ard.service.BalanceService;
 import mn.astvision.ard.service.TransactionService;
+import mn.astvision.ard.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ public class TransactionApi {
     private TransactionService transactionService;
     @Autowired
     private BalanceService balanceService;
+    @Autowired
+    private TransferService transferService;
 
     //шилжүүлэг хийх
     @PostMapping
@@ -28,15 +31,16 @@ public class TransactionApi {
     //тухайн данснаас хийсэн бүх гүйлгээний хуулга авах
     @GetMapping("/list/{accountId}")
     public List<Transaction> transactionsList(@PathVariable String accountId){
-        return transactionService.transactionList(accountId);
+        return transferService.history(accountId);
     }
     //тухайн данснаас сүүлд хийгдсэн хуулга авах
     @GetMapping("/last/{accountNumber}")
     public  Transaction transactionLast(@PathVariable String accountNumber){
         return transactionService.transactionLast(accountNumber);
     }
-    @GetMapping("/inOut/{accountNumber}")
-    public BigDecimal inOut(@PathVariable String accountNumber){
-        return transactionService.inOut(accountNumber);
+    //account-ийн id-гаар нь орлого зарлагын нийлбэр олох
+    @GetMapping("/inOutByAccId/{accountId}")
+    public BigDecimal inOut(@PathVariable String accountId){
+        return transactionService.inOut(accountId);
     }
 }

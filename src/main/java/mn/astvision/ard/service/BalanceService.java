@@ -10,23 +10,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class BalanceService {
-
-    public void validate(String acc1, String acc2) {
-        //TODD: validate account
-        return;
-    }
-
-    public boolean isCredit(String acc, Transaction transaction) {
-        String fromAccountNumber = transaction.getFromAccountNumber();
-        return fromAccountNumber.equals(acc);
-    }
-
-
-    public boolean isDebit(String acc, Transaction transaction) {
-        String toAccountNumber =transaction.getToAccountNumber();
-        return toAccountNumber.equals(acc);
-    }
-
+    //орлого зарлагын нийлбэрийг олох
     public BigDecimal calculate(String account, List<Transaction> transactions) {
         BigDecimal currentBalance = BigDecimal.ZERO;
 
@@ -42,13 +26,25 @@ public class BalanceService {
                 log.info("хасагдсан дүн нь {} ба одоогийн дүн нь {}",transaction.getAmount(),currentBalance);
             }
         }
-
         return currentBalance;
+    }
+    //тухайн шилжүүлгийг орлог зарлаг эсхийг нь тооцох
+    public boolean isCredit(String acc, Transaction transaction) {
+        String fromAccountNumber = transaction.getFromAccountNumber();
+        return fromAccountNumber.equals(acc);
     }
 
 
+    public boolean isDebit(String acc, Transaction transaction) {
+        String toAccountNumber =transaction.getToAccountNumber();
+        return toAccountNumber.equals(acc);
+    }
+    //жижиг сажиг функц
+    public void validate(String acc1, String acc2) {
+        //TODD: validate account
+        return;
+    }
     public BigDecimal nz(BigDecimal val) {
         return val == null ? BigDecimal.ZERO : val;
     }
-
 }
