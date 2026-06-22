@@ -37,11 +37,12 @@ public class TransactionService {
     }
     //Сүүлд хийсэн хуулга харах
     public Transaction transactionLast(String accountId) {
-        return null;
+        List<Transaction> transactions = transferService.history(accountId);
+        return transactions.getFirst();
     }
     //орлого зарлагын нийлбэрийг олох
-    public BigDecimal inOut(String accountNumber) {
-        List<Transaction> transactions = transferService.history(accountNumber);
-        return balanceService.calculate(accountNumber, transactions );
+    public BigDecimal inOut(String accountId) {
+        List<Transaction> transactions = transferService.history(accountId);
+        return balanceService.calculate(accountId, transactions );
     }
 }

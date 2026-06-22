@@ -19,7 +19,7 @@ class BalanceServiceTest {
     private TransactionRepository transactionRepository;
     @Test
     void run(){
-        BigDecimal result = balanceService.calculate("3621000000",transactionRepository.findAll());
+        BigDecimal result = balanceService.calculate("6a38bf402bfd18e27391beba",transactionRepository.findAll());
         log.info("test-ийн үр дүн {}",result.toString());
     }
 

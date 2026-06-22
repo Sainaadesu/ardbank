@@ -33,10 +33,10 @@ public class TransactionApi {
     public List<Transaction> transactionsList(@PathVariable String accountId){
         return transferService.history(accountId);
     }
-    //тухайн данснаас сүүлд хийгдсэн хуулга авах
-    @GetMapping("/last/{accountNumber}")
-    public  Transaction transactionLast(@PathVariable String accountNumber){
-        return transactionService.transactionLast(accountNumber);
+    //тухайн данснаас accountId-гаар нь сүүлд хийгдсэн хуулга авах
+    @GetMapping("/last/{accountId}")
+    public  Transaction transactionLast(@PathVariable String accountId){
+        return transactionService.transactionLast(accountId);
     }
     //account-ийн id-гаар нь орлого зарлагын нийлбэр олох
     @GetMapping("/inOutByAccId/{accountId}")

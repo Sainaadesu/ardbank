@@ -11,16 +11,16 @@ import java.util.List;
 @Service
 public class BalanceService {
     //орлого зарлагын нийлбэрийг олох
-    public BigDecimal calculate(String account, List<Transaction> transactions) {
+    public BigDecimal calculate(String accountId, List<Transaction> transactions) {
         BigDecimal currentBalance = BigDecimal.ZERO;
 
         for (Transaction transaction : transactions) {
-            boolean credit = isCredit(account, transaction);
+            boolean credit = isCredit(accountId, transaction);
             if(credit){//надад мөнгө орсон
                 currentBalance = currentBalance.subtract(transaction.getAmount());
                 log.info("нэмэгдсэн дүн нь {} бас одоогийн мөнгө нь {}",transaction.getAmount(),currentBalance);
             }
-            boolean debit = isDebit(account, transaction);
+            boolean debit = isDebit(accountId, transaction);
             if(debit) {//надаас мөнгө гарсан
                 currentBalance = nz(currentBalance).add(nz(transaction.getAmount()));
                 log.info("хасагдсан дүн нь {} ба одоогийн дүн нь {}",transaction.getAmount(),currentBalance);
@@ -29,15 +29,15 @@ public class BalanceService {
         return currentBalance;
     }
     //тухайн шилжүүлгийг орлог зарлаг эсхийг нь тооцох
-    public boolean isCredit(String acc, Transaction transaction) {
-        String fromAccountNumber = transaction.getFromAccountNumber();
-        return fromAccountNumber.equals(acc);
+    public boolean isCredit(String accId, Transaction transaction) {
+        String fromAccountNumber = transaction.getFromAccountId();
+        return fromAccountNumber.equals(accId);
     }
 
 
-    public boolean isDebit(String acc, Transaction transaction) {
-        String toAccountNumber =transaction.getToAccountNumber();
-        return toAccountNumber.equals(acc);
+    public boolean isDebit(String accId, Transaction transaction) {
+        String toAccountNumber =transaction.getToAccountId();
+        return toAccountNumber.equals(accId);
     }
     //жижиг сажиг функц
     public void validate(String acc1, String acc2) {
