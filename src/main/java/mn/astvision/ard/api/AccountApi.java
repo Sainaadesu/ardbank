@@ -44,10 +44,10 @@ public class AccountApi {
         return accountService.update(account);
     }
 
-    //account delete By Account Number
+    //account delete By Account ID
     @DeleteMapping
     public void delete(@RequestBody Account account) {
-        accountService.delete(account.getAccountNumber());
+        accountService.delete(account.getAccountId());
     }
 
 }
