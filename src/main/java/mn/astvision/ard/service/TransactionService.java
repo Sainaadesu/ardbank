@@ -22,6 +22,8 @@ public class TransactionService {
     private AccountRepository accountRepository;
     @Autowired
     private TransferService transferService;
+    @Autowired
+    private BalanceService balanceService;
 
     //Шилжүүлэг хийх
     public Transaction transferCreate(TransferRequest transaction) {
@@ -43,5 +45,10 @@ public class TransactionService {
     //Сүүлд хийсэн хуулга харах
     public Transaction transactionLast(String accountNumber) {
         return null;
+    }
+
+    public BigDecimal inOut(String accountNumber) {
+        List<Transaction> transactions = transactionRepository.findByToAccountNumberAndFromAccountNumber(accountNumber,accountNumber);
+        return balanceService.calculate(accountNumber, transactions );
     }
 }

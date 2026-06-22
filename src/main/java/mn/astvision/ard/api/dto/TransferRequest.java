@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import mn.astvision.ard.enums.TransactionType;
 
 /**
@@ -17,6 +18,7 @@ import mn.astvision.ard.enums.TransactionType;
  * @param description       free-text note shown on the statement
  * @param reference         optional idempotency key; a repeat with the same value is a no-op
  */
+@Builder
 public record TransferRequest(
         @NotBlank String fromAccountNumber,
         @NotBlank String toAccountNumber,

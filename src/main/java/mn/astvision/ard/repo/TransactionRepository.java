@@ -20,4 +20,5 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
 
     /** Incoming transfers of an account, newest first. */
     List<Transaction> findByToAccountIdOrderByCreatedAtDesc(String toAccountId);
+    List<Transaction> findByToAccountNumberAndFromAccountNumber(String accountNumber, String accountNumber1);
 }

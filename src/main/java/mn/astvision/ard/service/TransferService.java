@@ -113,8 +113,10 @@ public class TransferService {
 
     /** Full transfer history (incoming + outgoing) for an account, newest first. */
     public List<Transaction> history(String accountId) {
+        log.info("account id нь :{}",accountId);
         var out = transactionRepository.findByFromAccountIdOrderByCreatedAtDesc(accountId);
         var in = transactionRepository.findByToAccountIdOrderByCreatedAtDesc(accountId);
+        log.info("out болон in нь : {}{}",out,in);
         return java.util.stream.Stream.concat(out.stream(), in.stream())
                 .sorted(java.util.Comparator.comparing(Transaction::getCreatedAt,
                         java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())))

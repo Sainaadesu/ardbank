@@ -63,7 +63,7 @@ class AuthServiceTest {
     class Register {
 
         private final RegisterRequest request =
-                new RegisterRequest("jdoe", "secret123", "John", "Doe");
+                new RegisterRequest("jdoe", "secret123", true, "Doe","John");
 
         @Test
         @DisplayName("creates a new user with an encoded password and the default USER role")
