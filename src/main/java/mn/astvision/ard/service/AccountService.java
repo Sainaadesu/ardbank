@@ -52,17 +52,14 @@ public class AccountService {
         String bankId = "36";
         String accTypeNum = "";
         switch (type){
-                case AccountCategory.Saving -> {
+                case  AccountCategory.Checking ->{
                 accTypeNum="1";
             }
-                case  AccountCategory.Checking ->{
-                accTypeNum="2";
+            case AccountCategory.Demand_Deposit -> {
+                accTypeNum = "2";
             }
                 case AccountCategory.Term_Deposit -> {
                 accTypeNum = "3";
-            }
-                case AccountCategory.Demand_Deposit -> {
-                accTypeNum = "4";
             }
         }
         Sequence AccountSerial = sequenceRepository.findById("account_seq").orElseGet(()->buildSequence());
