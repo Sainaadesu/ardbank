@@ -8,11 +8,14 @@ import mn.astvision.ard.repo.AccountRepository;
 import mn.astvision.ard.repo.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,5 +57,33 @@ public class TransactionService {
     public BigDecimal inOut(String accountId) {
         List<Transaction> transactions = transferService.history(accountId);
         return balanceService.calculate(accountId, transactions );
+    }
+    //тодорхой хугацаанд хийгдсэн хуулга авах
+    public List<Transaction> getByDate(LocalDate startDate, LocalDate endDate, String accountId) {
+        if(startDate.isAfter(endDate)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"date");
+        }
+        List<Transaction> transactions = transferService.history(accountId);
+        log.info("энэ бол ажиллаж байна");
+        List<Transaction> result =filterByRange(startDate, endDate, transactions);
+        return result;
+    }
+    private List<Transaction> filterByRange(LocalDate startDate, LocalDate endDate, List<Transaction> transactions){
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(23,59,59);
+        log.info("эхдэх өдөр нь {} дуусах өдөр нь {}",start,end);
+        List<Transaction> filtered = new java.util.ArrayList<>();
+        for (Transaction transaction : transactions) {
+            LocalDateTime completedAt = transaction.getCompletedAt();
+            if(!completedAt.isBefore(start) && !completedAt.isAfter(end)){
+                log.info("нөхцөл биеллэ");
+                filtered.add(transaction);
+            }
+            else {
+
+                log.info("Нөхцөл нь биелэхгүй байна. тухайн хуулгын өдөр нь {}",completedAt);
+            }
+        }
+        return filtered;
     }
 }

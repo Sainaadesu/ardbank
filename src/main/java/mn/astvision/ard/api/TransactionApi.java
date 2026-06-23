@@ -7,9 +7,12 @@ import mn.astvision.ard.service.TransactionService;
 import mn.astvision.ard.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -41,6 +44,14 @@ public class TransactionApi {
     //account-ийн id-гаар нь орлого зарлагын нийлбэр олох
     @GetMapping("/inOutByAccId/{accountId}")
     public BigDecimal inOut(@PathVariable String accountId){
+
         return transactionService.inOut(accountId);
+    }
+    //эхлэх болон төгсөн огноо, дансны id оруулаад тухайн дансны тэр хооронд хийгдсэн хуулга өгөх
+    @GetMapping("/getTransactionByDate")
+    public List<Transaction> getByDate(@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                 @RequestParam String accountId){
+        return transactionService.getByDate(startDate, endDate, accountId);
     }
 }
