@@ -1,5 +1,6 @@
 package mn.astvision.ard.service;
 
+import lombok.extern.slf4j.Slf4j;
 import mn.astvision.ard.api.dto.TransferRequest;
 import mn.astvision.ard.data.Account;
 import mn.astvision.ard.data.Transaction;
@@ -13,7 +14,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 public class TransactionService {
     @Autowired
@@ -32,6 +36,12 @@ public class TransactionService {
         boolean toAccExist = accountRepository.existsByAccountNumber(transaction.toAccountNumber());
         if(!toAccExist){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Account doesn't exist 2");
+        }
+        Pattern accTypePattern = Pattern.compile("^..3.*");
+        Matcher accIsTermDeposit = accTypePattern.matcher(transaction.fromAccountNumber());
+        log.info("тухайн дасны төрлийг шалгаад: {}",accIsTermDeposit.matches());
+        if(accIsTermDeposit.matches()){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"Account type is term deposit");
         }
         return transferService.transfer(transaction);
     }

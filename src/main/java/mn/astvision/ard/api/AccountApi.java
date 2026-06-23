@@ -28,9 +28,9 @@ public class AccountApi {
     }
 
     //account Read By userID
-    @GetMapping("by-id")
-    public Account getById(@RequestBody Account account) {
-        return accountService.getById(account.getUserId());
+    @GetMapping("/by-id/{userId}")
+    public Account getById(@PathVariable String userId) {
+        return accountService.getById(userId);
     }
 
     /// /account read By Account Number
