@@ -1,10 +1,13 @@
 package mn.astvision.ard.service;
 
 import lombok.extern.slf4j.Slf4j;
+import mn.astvision.ard.api.dto.TransferRequest;
 import mn.astvision.ard.data.Sequence;
 import mn.astvision.ard.data.User;
 import mn.astvision.ard.enums.AccountCategory;
+import mn.astvision.ard.enums.TransactionType;
 import mn.astvision.ard.repo.SequenceRepository;
+import mn.astvision.ard.repo.TransactionRepository;
 import mn.astvision.ard.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,7 @@ import mn.astvision.ard.repo.AccountRepository;
 
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -32,6 +36,10 @@ public class AccountService {
     private UserRepository userRepository;
     @Autowired
     private SequenceRepository sequenceRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
+    private TransactionService transactionService;
 
     //CRUD
     //Create
@@ -43,9 +51,27 @@ public class AccountService {
         if(!isUserExits ){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Account does not exist");
         }
+        BigDecimal setAmount = account.getCurrentBalance();
         String generated = generateAccountNumber(account.getAccountCategory());
         account.setAccountNumber(generated);
-        return accountRepository.save(account);
+        account.setCurrentBalance(BigDecimal.ZERO);
+        accountRepository.save(account);
+        ATMCharge(account.getAccountNumber(), setAmount);
+
+        account.setCurrentBalance(setAmount);
+        return account;
+    }
+
+    //ATM charge
+    public void ATMCharge(String accNumber, BigDecimal amount){
+        TransferRequest ATMTransaction= TransferRequest.builder()
+                .fromAccountNumber("369000018")
+                .toAccountNumber(accNumber)
+                .amount(amount)
+                .type(TransactionType.interBank)
+                .description("Орлог")
+                .build();
+        transactionService.transferCreate(ATMTransaction);
     }
     //accoundnum generate
     public String generateAccountNumber(AccountCategory type) {
